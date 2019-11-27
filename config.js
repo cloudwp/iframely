@@ -29,7 +29,7 @@
         WHITELIST_LOG_URL: 'https://iframely.com/whitelist-log',
 
         // Default cache engine to prevent warning.
-        CACHE_ENGINE: 'node-cache',
+        CACHE_ENGINE: 'no-cache',
         CACHE_TTL: 24 * 60 * 60,
         API_REQUEST_CACHE_TTL: 30 * 24 * 60 * 60,
         IMAGE_META_CACHE_TTL: 7 *24 * 60 * 60,
@@ -61,7 +61,7 @@
 
         T: {
             text_html: "text/html",
-            maybe_text_html: "maybe_text_html",            
+            maybe_text_html: "maybe_text_html",
             javascript: "application/javascript",
             safe_html: "text/x-safe-html",
             image_jpeg: "image/jpeg",
@@ -149,7 +149,7 @@
         },
 
         FEATURES: [ // feature policy: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Feature-Policy#Directives
-            'ambient-light-sensor', 'autoplay', 'accelerometer', 'camera', 'display-capture', 'document-domain', 'encrypted-media', 
+            'ambient-light-sensor', 'autoplay', 'accelerometer', 'camera', 'display-capture', 'document-domain', 'encrypted-media',
             'fullscreen', 'geolocation', 'gyroscope', 'magnetometer', 'microphone', 'midi', 'payment', 'picture-in-picture',
             'speaker', 'sync-xhr', 'usb', 'wake-lock', 'vr', 'xr', 'vr / xr'
         ],
@@ -280,7 +280,7 @@
         } else {
             baseAppUrlForAgent = config.baseAppUrl;
         }
-        
+
         config.USER_AGENT = "Iframely/" + version + " (+" + (baseAppUrlForAgent || 'https://github.com/itteco/iframely') + ")";
     }
 
