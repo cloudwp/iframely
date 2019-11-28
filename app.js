@@ -22,6 +22,8 @@ if (CONFIG.allowedOrigins) {
   app.use(function(req, res, next) {
     var origin = req.headers["origin"];
 
+    res.header('Surrogate-Control', 'max-age=86400, stale-while-revalidate=600, stale-if-error=86400');
+
     if (origin) {
       if (CONFIG.allowedOrigins.indexOf('*') > -1) {
         res.setHeader('Access-Control-Allow-Origin', '*');
