@@ -26,14 +26,44 @@ module.exports = {
             return cb (new Error ("No youtube.api_key configured"));
         }
 
-        var statsUri = "https://www.googleapis.com/youtube/v3/videos?part=id%2Csnippet%2Cstatistics%2CcontentDetails%2Cplayer%2Cstatus&key=" + api_key + "&id=" + urlMatch[1];
+        var parts = options.getProviderOptions('youtube.parts') || [
+            "id",
+            "snippet",
+            "statistics",
+            "contentDetails",
+            "player",
+            "status"
+        ];
+
+        var statsUri = "https://www.googleapis.com/youtube/v3/videos?part=" + parts.join("%2C") + "&key=" + api_key + "&id=" + urlMatch[1];
 
         request({
             uri: statsUri,
             cache_key: "youtube:gdata:" + urlMatch[1],
             json: true,
-            prepareResult: function(error, b, data, cb) {
+            allowCache: function(error, response, data) {
 
+                var errorDomain = 
+                    data 
+                    && data.error
+                    && data.error.errors
+                    && data.error.errors[0]
+                    && data.error.errors[0].domain;
+
+                var errorCode = 
+                    data 
+                    && data.error
+                    && data.error.code;
+
+                var usageLimitsError = 
+                    errorDomain === 'youtube.quota'
+                    || errorDomain === 'usageLimits';
+
+                var serverError = errorCode && errorCode >= 500 && errorCode < 600;
+
+                return !usageLimitsError && !serverError;
+            },
+            prepareResult: function(error, response, data, cb) {
                 if (error) {
                     return cb(error);
                 }
@@ -229,7 +259,7 @@ module.exports = {
         }
 
         // thumbnails. Avoid black stripes
-        Object.keys(youtube_video_gdata.thumbnails).forEach(function(def) {
+        youtube_video_gdata.thumbnails && Object.keys(youtube_video_gdata.thumbnails).forEach(function(def) {
             if ( youtube_video_gdata.thumbnails[def] 
                 && youtube_video_gdata.thumbnails[def].width
                 && youtube_video_gdata.thumbnails[def].height
@@ -245,7 +275,7 @@ module.exports = {
         });
 
         // But allow bigger image (with black stripes, sigh) for HD w/o maxresdefault to avoid 'tiny-only' thumbnail
-        if (widescreen && youtube_video_gdata.thumbnails && !youtube_video_gdata.thumbnails.maxres && (youtube_video_gdata.thumbnails.standard || youtube_video_gdata.thumbnails.high)) {
+        if (youtube_video_gdata.embeddable && widescreen && youtube_video_gdata.thumbnails && !youtube_video_gdata.thumbnails.maxres && (youtube_video_gdata.thumbnails.standard || youtube_video_gdata.thumbnails.high)) {
             var thumbnail = youtube_video_gdata.thumbnails.standard || youtube_video_gdata.thumbnails.high;
             links.push({
                 href: thumbnail.url,

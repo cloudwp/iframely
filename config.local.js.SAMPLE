@@ -137,9 +137,10 @@
         */
          }],
 
+        /* Configure use of HTTP proxies as needed. 
+           You don't have to specify all options per regex - just what you need to override
+        */
         /*
-        // Configure use of HTTP proxies as needed.
-        // You don't have to specify all options per regex - just what you need to override
         PROXY: [{
             re: [/^https?:\/\/www\.domain\.com/],
             proxy_server: 'http://1.2.3.4:8080',
@@ -152,6 +153,7 @@
                 // Refer to: https://github.com/request/request
                 // Overrides previous params if overlapped.
             },
+            cache_ttl: 3600, // in seconds, cache response for 1 hour.
             disable_http2: true
         }],
         */
@@ -203,6 +205,7 @@
             // It is probably the same API key you use for Google Maps.
             youtube: {
                 // api_key: "INSERT YOUR VALUE",
+                // parts: [ "snippet", "player" ], // list of fields you want to use in the request, in most cases you only need those two
                 get_params: "?rel=0&showinfo=1"     // https://developers.google.com/youtube/player_parameters
             },
             vimeo: {
@@ -277,6 +280,9 @@
             // https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html
             /^https?:\/\/169\.254\.169\.254/
         ]
+
+        /** url for prerender service */
+        PRERENDER_URL: "https://domain/render?url=",
     };
 
     module.exports = config;
