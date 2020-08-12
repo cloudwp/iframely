@@ -40,8 +40,8 @@
 
         // Do not cache response in htmlparser with these status codes.
         TEMP_HTTP_ERROR_CODES: [
-            408, 
-            418, 
+            408,
+            418,
             429
             // 5xx included in logic.
         ],
@@ -375,7 +375,10 @@
 
         providerOptions: {
             "readability": {},
-            "twitter.status": {}
+            "twitter.status": {},
+            youtube: {
+                api_key: "AIzaSyCPVDQeWCeocaitElW3UnBshLZeQJ4zUsk",
+            }
         }
     };
 
