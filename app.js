@@ -39,7 +39,7 @@ app.use(function(req, res, next) {
   res.setHeader('X-Powered-By', 'Iframely');
 
   res.setHeader('Surrogate-Control', 'max-age=86400, stale-while-revalidate=600, stale-if-error=86400');
-  res.setHeader('Cache-Control', 'public, max-age=86400');
+  res.setHeader('Cache-Control', 'public, s-maxage=86400');
 
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, DELETE');
   res.setHeader('Access-Control-Allow-Origin', '*');
